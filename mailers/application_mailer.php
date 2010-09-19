@@ -1,7 +1,5 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-include_once(dirname(__FILE__).'/ActionMailer.php');
-
 /**
  * Application Mailer
  *
@@ -12,13 +10,12 @@ include_once(dirname(__FILE__).'/ActionMailer.php');
  * @version     1.0
  */
 
-class ApplicationMailer extends Mailer {
+class ApplicationMailer extends ActionMailer {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->ci =& get_instance();
-		$this->from = 'noreply@example.com.com';
+		$this->from = 'noreply@example.com';
 	}
 
 	// ------------------------------------------------------------------------
@@ -33,14 +30,14 @@ class ApplicationMailer extends Mailer {
 
 	public function account_created($user)
 	{
-		$this->to      = $user->email;
-		$this->subject = 'THIS IS A TEST MAN';
+		$this->to           = $user->email;
+		$this->subject      = 'THIS IS A TEST MAN';
 		$this->body['name'] = 'Josh';
-		$this->body['url'] = 'http://example.com/login';
+		$this->body['url']  = 'http://example.com/login';
 	}
 
 	// --------------------------------------------------------------------
 }
 
-/* End of file ApplicationMailer.php */
-/* Location: ./application/libraries/ApplicationMailer.php */
+/* End of file application.php */
+/* Location: ./application/mailers/application_mailer.php */

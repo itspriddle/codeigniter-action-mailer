@@ -13,8 +13,12 @@ To send an email, call `ApplicationMailer->deliver_account_notification()`
 Defining Messages
 -----------------
 Each message in a mailer should be it's own method. This method should define
-`$this->to`, `$this->from`, `$this->subject`, and `$this->message`. If you
+`$this->to`, `$this->from`, and `$this->subject`. If you
 need attachments, assign them as an array to `$this->attachments`.
+
+The message content will be autoloaded from `views/[mailer classname]/methodname`.
+
+The `$this->body` array will be loaded as view data in your message file.
 
 Messages are delivered by calling `ApplicationMailer->deliver_MESSAGE_METHOD_NAME()`
 (replace *MESSAGE_METHOD_NAME* - See Sending Messages below).

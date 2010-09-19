@@ -1,12 +1,14 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Mailer handles all email functions
+ * ActionMailer
+ *
+ * DRY email for CodeIgniter, similar to ActionMailer in Ruby on Rails
  *
  * @package     ActionMailer
  * @subpackage  Libraries
  * @author      Joshua Priddle <jpriddle@nevercraft.net>
- * @version     1.0
+ * @version     0.1.0
  */
 
 class ActionMailer {

@@ -6,7 +6,6 @@
  * @package     ActionMailer
  * @subpackage  Libraries
  * @author      Joshua Priddle <jpriddle@nevercraft.net>
- * @copyright   Copyright (c) 2010, ViaTalk, LLC
  * @version     1.0
  */
 
@@ -24,18 +23,25 @@ class ActionMailer {
 
 	/**
 	 * The message to send to the user
-	 * Delivery methods should set this
+	 * Set by class/method.php
 	 *
 	 * @var string
 	 */
 	protected $message = '';
 
 	/**
+	 * Data available inside of the message view
+	 *
+	 * @var array
+	 */
+	protected $body = array();
+
+	/**
 	 * TO: address
 	 *
 	 * @var string
 	 */
-	protected $to;
+	protected $to = '';
 
 	/**
 	 * Reply-TO: address
@@ -106,7 +112,7 @@ class ActionMailer {
 		if (method_exists($this, $method))
 		{
 			call_user_func_array(array($this, $method), $arguments);
-			if ($this->valid())
+			if ($this->load_view($method) && $this->valid())
 			{
 				return $this->send_message();
 			}
@@ -117,6 +123,44 @@ class ActionMailer {
 			trigger_error("{$class}::{$method}() doesn't exist");
 			exit;
 		}
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Load the email view file
+	 *
+	 * @access private
+	 * @param  string  $method
+	 * @return void
+	 */
+
+	private function load_view($method)
+	{
+		$class   = strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', get_class($this)));
+		$dir     = APPPATH.'views/';
+		$html    = "{$class}/{$method}.html.php";
+		$text    = "{$class}/{$method}.txt.php";
+		$default = "{$class}/{$method}.php";
+		if (file_exists("{$dir}/{$html}"))
+		{
+			$view = $html;
+		}
+		else if (file_exists("{$dir}/{$text}"))
+		{
+			$view = $text;
+		}
+		else if (file_exists("{$dir}/{$default}"))
+		{
+			$view = $default;
+		}
+		else
+		{
+			trigger_error("Couldn't find a view");
+			exit;
+		}
+		$this->message = $this->ci->load->view($view, $this->body, TRUE);
+		return $this->message;
 	}
 
 	// --------------------------------------------------------------------

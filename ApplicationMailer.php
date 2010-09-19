@@ -35,7 +35,8 @@ class ApplicationMailer extends Mailer {
 	{
 		$this->to      = $user->email;
 		$this->subject = 'THIS IS A TEST MAN';
-		$this->message = "THIS IS A TEST MSG";
+		$this->body['name'] = 'Josh';
+		$this->body['url'] = 'http://example.com/login';
 	}
 
 	// --------------------------------------------------------------------

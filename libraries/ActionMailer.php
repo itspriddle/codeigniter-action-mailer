@@ -8,7 +8,7 @@
  * @package     ActionMailer
  * @subpackage  Libraries
  * @author      Joshua Priddle <jpriddle@nevercraft.net>
- * @version     0.1.0
+ * @version     0.1.1
  */
 
 class ActionMailer {

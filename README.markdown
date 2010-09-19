@@ -1,17 +1,22 @@
-CodeIgniter ActionMailer
-========================
+# CodeIgniter ActionMailer
+
 CodeIgniter's Email library is pretty good...
 but it's no [ActionMailer](http://api.rubyonrails.org/classes/ActionMailer/Base.html).
 
-Usage
------
-Drop `ActionMailer.php` in your `libraries/` directory. Create a new mailer and
-extend ActionMailer. See `ApplicationMailer.php` for an example mailer.
 
-To send an email, call `ApplicationMailer->deliver_account_notification()`
+## Usage
 
-Defining Messages
------------------
+Drop `ActionMailer.php` and `MY_Loader.php` in your `libraries/` directory.
+Create a new mailer and extend ActionMailer. See `ApplicationMailer.php` for
+an example mailer.
+
+Load a mailer from a controller with `$this->load->mailer('my_mailer')`.
+
+To send an email, call `$this->my_mailer->deliver_account_notification()`
+
+
+## Defining Messages
+
 Each message in a mailer should be it's own method. This method should define
 `$this->to`, `$this->from`, and `$this->subject`. If you
 need attachments, assign them as an array to `$this->attachments`.
@@ -23,8 +28,9 @@ The `$this->body` array will be loaded as view data in your message file.
 Messages are delivered by calling `ApplicationMailer->deliver_MESSAGE_METHOD_NAME()`
 (replace *MESSAGE_METHOD_NAME* - See Sending Messages below).
 
-Sending Messages
-----------------
+
+## Sending Messages
+
 To deliver a message, call the message method from your Mailer with a
 prefix of **deliver_**.
 
@@ -32,8 +38,9 @@ For example: assume you've loaded your mailer to `$this->mailer` and want to sen
 the message defined in `ApplicationMailer->my_message()`. From your application, simply
 call `$this->mailer->deliver_my_message()`.
 
-Explanation for non Rails People
---------------------------------
+
+## Explanation for non Rails People
+
 In Rails, each message that is emailed is defined as a method in a mailer. For example,
 you may have `Mailer.account_created`.  This method should handle setting the to address,
 from address, subject, and email body.
@@ -46,6 +53,12 @@ This PHP version behaves similarly. You can do things like:
     $user = $this->users->get('josh');
     $this->mailer->deliver_account_created($user);
 
-Requirements
-------------
+
+## Requirements
+
 Sorry kids, PHP5 only. You should be ashamed of yourself if you're using PHP4 anyway.
+
+
+## License
+
+MIT, see LICENSE

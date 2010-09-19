@@ -25,7 +25,7 @@ class ActionMailer {
 
 	/**
 	 * The message to send to the user
-	 * Set by class/method.php
+	 * Set by load_view()
 	 *
 	 * @var string
 	 */
@@ -46,16 +46,30 @@ class ActionMailer {
 	protected $to = '';
 
 	/**
+	 * CC: address
+	 *
+	 * @var string or array
+	 */
+	protected $cc = '';
+
+	/**
+	 * BCC: address
+	 *
+	 * @var string or array
+	 */
+	protected $bcc = '';
+
+	/**
 	 * Reply-TO: address
 	 *
-	 * @var string
+	 * @var string or array(email, name)
 	 */
 	protected $reply_to = '';
 
 	/**
 	 * FROM: address
 	 *
-	 * @var string
+	 * @var string or array(email, name)
 	 */
 	protected $from = '';
 
@@ -177,14 +191,25 @@ class ActionMailer {
 	private function send_message()
 	{
 		$this->ci->email->clear(empty($this->attachments) ? FALSE : TRUE);
-		$this->ci->email->to($this->to);
-		$this->ci->email->from($this->from);
 		$this->ci->email->subject($this->subject);
 		$this->ci->email->message($this->message);
 
-		if (trim($this->reply_to) != '' && $this->reply_to != $this->to)
+		foreach (array('from', 'reply_to') as $key)
 		{
-			$this->ci->email->reply_to($this->reply_to);
+			$k = $this->$key;
+			if (is_array($k) && count($k) == 2)
+			{
+				$this->ci->email->$key($k[0], $k[1]);
+			}
+			elseif (is_string($k) && trim($k) != '')
+			{
+				$this->ci->email->$key($k);
+			}
+		}
+
+		foreach (array('cc', 'bcc', 'to') as $key)
+		{
+			$this->ci->email->$key($this->$key);
 		}
 
 		if ( ! empty($this->attachments))
